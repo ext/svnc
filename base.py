@@ -9,6 +9,7 @@ class SVNBase:
 
 from url import *
 from info import *
+from status import *
 
 def factory(argv):
     command = argv[0]
