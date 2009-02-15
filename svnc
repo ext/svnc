@@ -172,7 +172,7 @@ class Connector:
 import base
 
 if __name__ == '__main__':
-   if sys.argv[0] == '/home/ext/bin/svn2' and len(sys.argv) > 1:
+   if os.path.basename(sys.argv[0]) == 'svn2' and len(sys.argv) > 1:
       svn = base.factory(sys.argv[1:])
       svn.execute()
    else:
