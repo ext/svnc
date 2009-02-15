@@ -1,4 +1,20 @@
 import pysvn
+import platform
+
+if platform.system() == 'Windows':
+    Red = 4
+    Yellow = 14
+    Green = 2|8
+    Blue = 1|8
+    White = 15
+    Reset = 0
+else:
+    Red = "\033[00;31m"
+    Yellow = "\033[00;33m"
+    Green = "\033[01;32m"
+    Blue = "\033[01;34m"
+    White = "\033[01;37m"
+    Reset = "\033[0m"
 
 class SVNBase:
     def __init__(self):
@@ -6,6 +22,9 @@ class SVNBase:
 
     def execute(self):
         pass
+
+    def printc(self, color, text):
+        print color, text, Reset
 
 from url import *
 from info import *
