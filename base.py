@@ -16,6 +16,9 @@ else:
     White = "\033[01;37m"
     Reset = "\033[0m"
 
+def color_str(color, str):
+	return color + str + base.Reset
+
 class SVNBase:
     def __init__(self):
         self.client = pysvn.Client()
@@ -29,6 +32,7 @@ class SVNBase:
 from url import *
 from info import *
 from status import *
+from diff import *
 
 def factory(argv):
     command = argv[0]
