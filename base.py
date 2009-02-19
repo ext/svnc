@@ -14,6 +14,7 @@ else:
     Green = "\033[01;32m"
     Blue = "\033[01;34m"
     White = "\033[01;37m"
+    Reverse = "\033[07m"
     Reset = "\033[0m"
 
 def color_str(color, str):

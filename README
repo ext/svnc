@@ -1,0 +1,7 @@
+svnc is (supposted to be) a new cli interface to subversion. It is designed to replace svn but remain compatible.
+
+Features includes:
+ * Color highligting
+ * Interactive commits
+ * Simplification of common operations
+ * Patch creation
