@@ -39,7 +39,8 @@ def factory(argv):
 	command = argv[0]
 	try:
 		return eval(command)(argv[1:])
-	except NameError:
+	except NameError, e:
+		print e
 		print "Unknown command: '%s'" % (command)
 		print "Type 'svn help' for usage." 
 		return None

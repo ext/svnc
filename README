@@ -2,6 +2,6 @@ svnc is (supposted to be) a new cli interface to subversion. It is designed to r
 
 Features includes:
  * Color highligting
- * Interactive commits
+ * Interactive commits (aka cherry picking)
  * Simplification of common operations
  * Patch creation

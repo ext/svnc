@@ -1,5 +1,7 @@
 import base
 import subprocess
+import getopt
+import pysvn
 
 def which(program):
 	import os
@@ -30,13 +32,57 @@ def format_line(line):
 class diff(base.SVNBase):
 	def __init__(self, argv):
 		base.SVNBase.__init__(self)
+		
+		opts, args = getopt.getopt(argv, 'r:c:Nx:asdf', ['revision'])
+		print opts
+		
+		self.path = ['.']
+		self.revision_start = pysvn.Revision(pysvn.opt_revision_kind.base)
+		self.revision_end = pysvn.Revision(pysvn.opt_revision_kind.working)
+		
+		if len(args) > 0:
+			self.path = args
+		
+		for key, value in opts:
+			if key == '-r':
+				self.revision_start, self.revision_stop = self.revision_from_argument(value)
+			
+			print key, ': ', value
 	
-		self.path = '.'
-		if len(argv) > 0:
-			self.path = argv[-1]
+	def revision_from_argument(self, string):
+		parts = string.split(':')
+		
+		if len(parts) == 1:
+			return self.revision_from_string(parts[0]), pysvn.Revision(pysvn.opt_revision_kind.working)
+		
+		if len(parts) == 2:
+			return self.revision_from_string(parts[0]), self.revision_from_string(parts[1])
+	
+	def revision_from_string(self, string):
+		try:
+			return pysvn.Revision(pysvn.opt_revision_kind.number, int(string))
+		except ValueError:
+			try:
+				return {
+					'HEAD': pysvn.Revision(pysvn.opt_revision_kind.head),
+					'BASE': pysvn.Revision(pysvn.opt_revision_kind.base),
+					'COMMITED': pysvn.Revision(pysvn.opt_revision_kind.committed),
+					'PREV': pysvn.Revision(pysvn.opt_revision_kind.previous),
+					'WORKING': pysvn.Revision(pysvn.opt_revision_kind.working)
+				}[string.upper()]
+			except KeyError:
+				# check if it is a date
+				raise 'foo'
 	
 	def execute(self):
-		diff = self.client.diff('.', self.path)
+		print self.revision_end
+		diff = self.client.diff(
+			'.',
+			self.path[0],
+			self.revision_start,
+			self.path[0],
+			self.revision_end,
+		)
 		for line in diff.split("\n"):
 			print format_line(line)
 		
