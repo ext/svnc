@@ -173,9 +173,14 @@ import base
 
 if __name__ == '__main__':
 	if os.path.basename(sys.argv[0]) == 'svn2' and len(sys.argv) > 1:
+		import pysvn
+		
 		svn = base.factory(sys.argv[1:])
 		if svn:
-			svn.execute()
+			try:
+				svn.execute()
+			except pysvn._pysvn_2_5.ClientError, e:
+				print 'svn: %s' % e
 	else:
 		
 		cmd = ['svn']
