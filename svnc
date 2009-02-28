@@ -174,7 +174,8 @@ import base
 if __name__ == '__main__':
    if os.path.basename(sys.argv[0]) == 'svn2' and len(sys.argv) > 1:
       svn = base.factory(sys.argv[1:])
-      svn.execute()
+      if svn:
+         svn.execute()
    else:
 
         cmd = ['svn']

@@ -36,5 +36,11 @@ from status import *
 from diff import *
 
 def factory(argv):
-    command = argv[0]
-    return eval(command)(argv[1:])
+	command = argv[0]
+	try:
+		return eval(command)(argv[1:])
+	except NameError:
+		print "Unknown command: '%s'" % (command)
+		print "Type 'svn help' for usage." 
+		return None
+
