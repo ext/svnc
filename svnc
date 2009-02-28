@@ -208,21 +208,21 @@ if __name__ == '__main__':
 		stderr = Connector(process.stderr, sys.stderr)
 		
 		while True:
-			 ret = process.poll()
+			ret = process.poll()
 			
-			 while data_in_pipe(process.stdout):
+			while data_in_pipe(process.stdout):
 				stdout_eof = stdout.read()
 				if stdout_eof:
 					  break
 				
-			 while data_in_pipe(process.stderr):
+			while data_in_pipe(process.stderr):
 				stderr_eof = stderr.read()
 				if stderr_eof:
 					  break
-				
+			
 			if ret != None and stdout_eof and stderr_eof:
 				break
-
+		
 		if ret < 0:
 			 print 'Terminated with code: %d' % (-ret)
 			 sys.exit(-ret)
