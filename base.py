@@ -1,5 +1,7 @@
 import pysvn
 import platform
+import os
+import sys
 
 if platform.system() == 'Windows':
     Red = 4
@@ -26,6 +28,13 @@ class SVNBase:
 
     def execute(self):
         pass
+
+    def write(self, string):
+        if os.isatty(sys.stdout.fileno()):
+            for line in string.split("\n"):
+                print self.format_line(line)
+        else:
+            print string
 
     def printc(self, color, text):
         print color, text, Reset

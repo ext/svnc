@@ -2,8 +2,6 @@ import base
 import subprocess
 import getopt
 import pysvn
-import os
-import sys
 
 def which(program):
 	import os
@@ -21,15 +19,6 @@ def which(program):
 				return exe_file
 
 	return None
-
-def format_line(line):
-	c = line[:1]
-	if c == '+':
-		return base.color_str(base.Green, line)
-	elif c == '-':
-		return base.color_str(base.Red, line)
-	else:
-		return line
 
 class diff(base.SVNBase):
 	def __init__(self, argv):
@@ -75,8 +64,16 @@ class diff(base.SVNBase):
 				# check if it is a date
 				raise 'foo'
 	
+	def format_line(self, line):
+		c = line[:1]
+		if c == '+':
+			return base.color_str(base.Green, line)
+		elif c == '-':
+			return base.color_str(base.Red, line)
+		else:
+			return line
+	
 	def execute(self):
-		print self.revision_end
 		diff = self.client.diff(
 			'.',
 			self.path[0],
@@ -85,11 +82,7 @@ class diff(base.SVNBase):
 			self.revision_end,
 		)
 		
-		if os.isatty(sys.stdout.fileno()):
-			for line in diff.split("\n"):
-				print format_line(line)
-		else:
-			print diff
+		self.write(diff)
 		
 		diffstat = which('diffstat')
 		if diffstat:
