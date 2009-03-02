@@ -29,6 +29,7 @@ class diff(base.SVNBase):
 		self.path = ['.']
 		self.revision_start = pysvn.Revision(pysvn.opt_revision_kind.base)
 		self.revision_end = pysvn.Revision(pysvn.opt_revision_kind.working)
+		self.recursive = True
 		
 		if len(args) > 0:
 			self.path = args
@@ -36,6 +37,9 @@ class diff(base.SVNBase):
 		for key, value in opts:
 			if key == '-r':
 				self.revision_start, self.revision_stop = self.revision_from_argument(value)
+			
+			if key == '-N' or key == '--non-recursive':
+				self.recursive = False
 			
 			print key, ': ', value
 	
@@ -81,6 +85,7 @@ class diff(base.SVNBase):
 				self.revision_start,
 				target,
 				self.revision_end,
+				self.recursive
 			)
 		
 		self.write(diff)
