@@ -61,8 +61,7 @@ class diff(base.SVNBase):
 					'WORKING': pysvn.Revision(pysvn.opt_revision_kind.working)
 				}[string.upper()]
 			except KeyError:
-				# check if it is a date
-				raise 'foo'
+				raise 'date revision not implemented yet'
 	
 	def format_line(self, line):
 		c = line[:1]
