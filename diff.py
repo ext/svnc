@@ -2,6 +2,8 @@ import base
 import subprocess
 import getopt
 import pysvn
+import os
+import sys
 
 def which(program):
 	import os
@@ -33,8 +35,7 @@ class diff(base.SVNBase):
 	def __init__(self, argv):
 		base.SVNBase.__init__(self)
 		
-		opts, args = getopt.getopt(argv, 'r:c:Nx:asdf', ['revision'])
-		print opts
+		opts, args = getopt.getopt(argv, 'r:c:Nx:', ['revision'])
 		
 		self.path = ['.']
 		self.revision_start = pysvn.Revision(pysvn.opt_revision_kind.base)
@@ -83,8 +84,12 @@ class diff(base.SVNBase):
 			self.path[0],
 			self.revision_end,
 		)
-		for line in diff.split("\n"):
-			print format_line(line)
+		
+		if os.isatty(sys.stdout.fileno()):
+			for line in diff.split("\n"):
+				print format_line(line)
+		else:
+			print diff
 		
 		diffstat = which('diffstat')
 		if diffstat:
