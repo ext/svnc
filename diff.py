@@ -74,13 +74,15 @@ class diff(base.SVNBase):
 			return line
 	
 	def execute(self):
-		diff = self.client.diff(
-			'.',
-			self.path[0],
-			self.revision_start,
-			self.path[0],
-			self.revision_end,
-		)
+		diff = ''
+		for target in self.path:
+			diff += self.client.diff(
+				'.',
+				target,
+				self.revision_start,
+				target,
+				self.revision_end,
+			)
 		
 		self.write(diff)
 		
